@@ -1,9 +1,9 @@
-defmodule Example.MixProject do
+defmodule BabysitterKata.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :example,
+      app: :babysitter_kata,
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,

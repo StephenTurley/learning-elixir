@@ -18,4 +18,8 @@ defmodule BabysitterKataTest do
   test "stays after 4 AM should have a total price of 0" do
     assert BabysitterKata.calculate_price("5:00PM", "5:00AM", "8:00PM") == 0
   end
+
+  test "works for one hour before bed time" do
+    assert BabysitterKata.calculate_price("5:00PM", "6:00PM", "8:00PM") == 12
+  end
 end

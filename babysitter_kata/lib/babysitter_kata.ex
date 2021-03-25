@@ -34,8 +34,8 @@ defmodule BabysitterKata do
 
   defp from_hours(start_hour, end_hour) do
     if valid(start_hour) && valid(end_hour) do
-      e = end_hour |> elem(0)
-      s = start_hour |> elem(0)
+      {e, _} = end_hour
+      {s, _} = start_hour
       (e - s) * 12
     else
       0
@@ -51,9 +51,8 @@ defmodule BabysitterKata do
   end
 
   defp hour_with_tod(time) do
-    parsed = Integer.parse(time)
-    hour = parsed |> elem(0)
-    tod = String.slice(parsed |> elem(1), 3..4)
+    {hour, rest} = Integer.parse(time)
+    tod = String.slice(rest, 3..4)
     {hour, tod}
   end
 end

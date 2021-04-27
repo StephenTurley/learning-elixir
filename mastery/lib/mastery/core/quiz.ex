@@ -12,10 +12,16 @@ defmodule Mastery.Core.Quiz do
             record: %{},
             mastered: []
 
+  @doc """
+  Constructs a new Template with the given fields
+  """
   def new(fields) do
     struct!(__MODULE__, fields)
   end
 
+  @doc """
+  Adds a template to the quiz
+  """
   def add_template(quiz, fields) do
     template = Template.new(fields)
 
@@ -32,6 +38,9 @@ defmodule Mastery.Core.Quiz do
   defp add_to_list_or_nil(nil, template), do: [template]
   defp add_to_list_or_nil(templates, template), do: [template | templates]
 
+  @doc """
+  Selects a random question if the quiz has a template
+  """
   def select_question(%__MODULE__{templates: t}) when map_size(t) == 0, do: nil
 
   def select_question(quiz) do
@@ -80,6 +89,9 @@ defmodule Mastery.Core.Quiz do
     Map.put(quiz, field, [template | list])
   end
 
+  @doc """
+  Records a response if the answer is correct and will move onto the next quiz if the current one is mastered
+  """
   def answer_question(quiz, %Response{correct: true} = response) do
     new_quiz =
       quiz
@@ -103,15 +115,24 @@ defmodule Mastery.Core.Quiz do
   defp maybe_advance(quiz, false = _mastered), do: quiz
   defp maybe_advance(quiz, true = _mastered), do: advance(quiz)
 
+  @doc """
+  Returns true if the quiz is mastered
+  """
   def mastered?(quiz) do
     score = Map.get(quiz.record, current_template(quiz).name, 0)
     score == quiz.mastery
   end
 
+  @doc """
+  Save the response as the last response
+  """
   def save_response(quiz, response) do
     Map.put(quiz, :last_response, response)
   end
 
+  @doc """
+  Move the current template to mastered and start the next one
+  """
   def advance(quiz) do
     quiz
     |> move_template(:mastered)
